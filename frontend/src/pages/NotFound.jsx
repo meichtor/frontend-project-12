@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { Col, Card, Button } from 'react-bootstrap'
+import { Col, Card, Button, Row, Container } from 'react-bootstrap'
 
 export default function NotFound() {
   const navigate = useNavigate()
@@ -10,13 +10,17 @@ export default function NotFound() {
   }
 
   return (
-    <Col className='col-8' xxl={3} md={8} >
-      <Card className='shadow-sm'>
-        <Card.Body className='p-5'>
-          <Card.Title as={'h1'} className='text-center h2 mb-5'>Страница не найдена</Card.Title>
-          <Button as={'a'} className='w-100' href='/' onClick={handleBack}>Назад</Button>
-        </Card.Body>
-      </Card>
-    </Col>
+    <Container fluid className='h-100'>
+      <Row className="justify-content-center align-content-center h-100">
+        <Col className='col-8' xxl={3} md={8} >
+          <Card className='shadow-sm'>
+            <Card.Body className='p-5'>
+              <Card.Title as={'h1'} className='text-center h2 mb-5'>Страница не найдена</Card.Title>
+              <Button as={'a'} className='w-100' href='/' onClick={handleBack}>Назад</Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   )
 }

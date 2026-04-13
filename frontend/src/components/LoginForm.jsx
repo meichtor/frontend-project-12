@@ -1,17 +1,16 @@
 import { Button, FloatingLabel, Form as UiForm } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
 import { routes } from '../routes'
+import { useDispatch } from 'react-redux'
+import { setUserData } from '../state/user/userSlice'
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
-    .min(2, 'Минимум 2 символа')
-    .max(50, 'Максимум 50 символов')
     .required('Обязательное поле'),
   password: Yup.string()
-    .min(2, 'Минимум 2 символа')
     .required('Обязательное поле'),
 })
 
@@ -26,12 +25,13 @@ const ErrorTooltip = ({ name, errors }) => {
 
 const LoginForm = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleSubmit = async (values, { setErrors, setSubmitting }) => {
     try {
       const response = await axios.post(routes.loginPath(), values)
-      const { token } = response.data
-      localStorage.setItem('auth_token', token)
+      const { token, username } = response.data
+      dispatch(setUserData({ token, username }))
       navigate('/')
     }
     catch (error) {

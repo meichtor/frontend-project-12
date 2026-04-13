@@ -1,14 +1,15 @@
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router'
-import Home from './pages/Home'
+import ChatPage from './pages/Chat'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 import Layout from './components/Layout'
+import { useSelector } from 'react-redux'
 
 const PrivateRoute = ({ children }) => {
-  const authToken = localStorage.getItem('auth_token')
   const location = useLocation()
+  const isAuth = useSelector(state => !!state.user.token)
   return (
-    authToken ? children : <Navigate to="/login" state={{ from: location }} />
+    isAuth ? children : <Navigate to="/login" state={{ from: location }} />
   )
 }
 
@@ -19,7 +20,7 @@ function App() {
         <Route path="/" element={<Layout />}>\
           <Route index element={(
             <PrivateRoute>
-              <Home />
+              <ChatPage />
             </PrivateRoute>
           )} />
           <Route path="/login" element={<Login />} />
