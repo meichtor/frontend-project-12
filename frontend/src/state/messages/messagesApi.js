@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { API_URL } from '../../routes'
+import socket from '../../socket'
 
 const messagesApi = createApi({
   reducerPath: 'messagesApi',
@@ -20,13 +21,42 @@ const messagesApi = createApi({
   endpoints: (builder) => ({
     getMessages: builder.query({
       query: () => `/messages`,
-      providesTags: ['Messages']
+      providesTags: ['Messages'],
+      async onCacheEntryAdded(
+        _arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+      ) {
+        try {
+          await cacheDataLoaded
+
+          const newMessageHandler = (message) =>
+            updateCachedData((draft) => {
+              console.log(message)
+              draft.push(message)
+            })
+
+          socket.addEventListener('newMessage', newMessageHandler)
+        }
+        catch {
+          console.error('cache data is not loaded')
+        }
+        await cacheEntryRemoved
+        socket.off('newMessage')
+      },
+    }),
+    addMessage: builder.mutation({
+      query: (message) => ({
+        url: '/messages',
+        method: 'POST',
+        body: message
+      }),
     }),
   }),
 })
 
 export const {
   useGetMessagesQuery,
+  useAddMessageMutation,
 } = messagesApi
 
 export default messagesApi

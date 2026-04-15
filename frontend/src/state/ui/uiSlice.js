@@ -8,7 +8,7 @@ const initialState = {
 }
 
 const uiSlice = createSlice({
-  name: 'uiSlice',
+  name: 'ui',
   initialState,
   reducers: {
     setCurrentChannel: (state, action) => {

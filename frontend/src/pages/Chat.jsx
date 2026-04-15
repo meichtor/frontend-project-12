@@ -1,4 +1,4 @@
-import { Container, Row, Alert, Col } from 'react-bootstrap'
+import { Container, Row, Alert, Col, Button } from 'react-bootstrap'
 import { useGetChannelsQuery } from '../state/channels/channelsApi'
 import { useGetMessagesQuery } from '../state/messages/messagesApi'
 import ChannelsList from '../components/ChannelsList'
@@ -6,43 +6,63 @@ import Loader from '../components/Loader'
 import { useSelector } from 'react-redux'
 import ChatHeader from '../components/ChatHeader'
 import ChatMessages from '../components/ChatMessages'
-import ChatFrom from '../components/ChatForm'
+import ChatForm from '../components/ChatForm'
+import { useEffect } from 'react'
+import socket from '../socket'
 
 export default function ChatPage() {
+  useEffect(() => {
+    socket.connect()
+
+    return () => {
+      socket.disconnect()
+    }
+  }, [])
+
+  const { selectedChannelId } = useSelector((state) => state.ui.chat)
   const {
     data: channels,
     isLoading: isChannelsLoading,
     isError: isChannelsError,
     error: channelsError,
-    refetch: refetchChannel,
+    refetch: refetchChannels,
   } = useGetChannelsQuery()
-
   const {
-    data: messages,
+    data: allMessages,
     isLoading: isMessagesLoading,
+    isError: isMessagesError,
+    error: messagesError,
+    refetch: refetchMessages,
   } = useGetMessagesQuery()
 
-  const { selectedChannelId } = useSelector((state) => state.ui.chat)
-
-
   if (isChannelsLoading || isMessagesLoading) {
-    return <Loader />
+    return (
+      <Container className='my-4 w-100 d-flex justify-content-center align-items-center h-100 rounded shadow'>
+        <Loader />
+      </Container>
+    )
   }
 
-  if (isChannelsError) {
+  if (isChannelsError || isMessagesError) {
+    const message = isChannelsError ? channelsError?.data?.message : messagesError?.data?.message
+    const refetch = isChannelsError ? refetchChannels : refetchMessages
+
     return (
-      <Alert variant="danger" className="m-3">
-        <Alert.Heading>Ошибка</Alert.Heading>
-        <p>{channelsError?.data?.message || 'Попробуйте обновить страницу'}</p>
-        <Button variant="outline-danger" onClick={refetchChannel}>
-          Попробовать снова
-        </Button>
-      </Alert>
+      <Container className='my-4 w-100 h-100'>
+        <Alert variant="danger" className="m-3">
+          <Alert.Heading>Ошибка</Alert.Heading>
+          <p>{message || 'Попробуйте обновить страницу'}</p>
+          <Button className='mt-3' variant="outline-danger" onClick={refetch}>
+            Попробовать снова
+          </Button>
+        </Alert>
+      </Container>
     )
   }
 
   const currentChannel = channels.find(({ id }) => id === selectedChannelId)
-  const messagesCount = messages.length
+  const channelMessages = allMessages.filter(({ channelId }) => channelId === selectedChannelId)
+  const messagesCount = channelMessages.length
 
   return (
     <Container className='my-4 h-100 rounded shadow'>
@@ -54,9 +74,9 @@ export default function ChatPage() {
         <Col className="col p-0 h-100">
           <div className='d-flex flex-column h-100'>
             <ChatHeader channel={currentChannel} messagesCount={messagesCount} />
-            <ChatMessages />
+            <ChatMessages messages={channelMessages} />
             <div className='mt-auto px-5 py-3'>
-              <ChatFrom />
+              <ChatForm />
             </div>
           </div>
         </Col>
