@@ -31,17 +31,23 @@ const messagesApi = createApi({
 
           const newMessageHandler = (message) =>
             updateCachedData((draft) => {
-              console.log(message)
               draft.push(message)
             })
 
+          const removeChannelHandler = ({ id }) =>
+            updateCachedData((draft) => {
+              return draft.filter((msg) => msg.channelId !== id)
+            })
+
           socket.addEventListener('newMessage', newMessageHandler)
+          socket.addEventListener('removeChannel', removeChannelHandler)
         }
         catch {
           console.error('cache data is not loaded')
         }
         await cacheEntryRemoved
         socket.off('newMessage')
+        socket.off('removeChannel')
       },
     }),
     addMessage: builder.mutation({

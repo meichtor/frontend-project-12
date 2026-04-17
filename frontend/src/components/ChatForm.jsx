@@ -1,7 +1,7 @@
 import { Form, InputGroup, Button, Spinner } from "react-bootstrap"
 import { ArrowRightSquare } from "react-bootstrap-icons"
 import { useAddMessageMutation } from '../state/messages/messagesApi';
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 const ChatForm = () => {
@@ -9,7 +9,9 @@ const ChatForm = () => {
   const { username } = useSelector((state) => state.user)
   const [addMessage, { isLoading }] = useAddMessageMutation()
   const [inputMessage, setInputMessage] = useState('')
+  const inputRef = useRef(null);
   const submitDisabled = inputMessage === '' || isLoading
+
   const handleChangeMessage = (e) => {
     const { value } = e.target
     setInputMessage(value)
@@ -28,18 +30,24 @@ const ChatForm = () => {
     try {
       await addMessage(message).unwrap()
       setInputMessage('')
-
     } catch (err) {
       console.error('Ошибка отправки:', err)
     }
   }
 
+  useEffect(() => {
+    if (!isLoading && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [isLoading])
+
   return (
     <Form noValidate className="py-1 border rounded-2" onSubmit={handleSubmit}>
       <InputGroup>
         <Form.Control
+          ref={inputRef}
           name="new message"
-          placeholder="Введдите сообщение"
+          placeholder="Введите сообщение"
           aria-label="Новое сообщение"
           aria-describedby="basic-addon1"
           className="border-0 p-0 ps-2"

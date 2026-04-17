@@ -3,23 +3,17 @@ import { useGetChannelsQuery } from '../state/channels/channelsApi'
 import { useGetMessagesQuery } from '../state/messages/messagesApi'
 import ChannelsList from '../components/ChannelsList'
 import Loader from '../components/Loader'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ChatHeader from '../components/ChatHeader'
 import ChatMessages from '../components/ChatMessages'
 import ChatForm from '../components/ChatForm'
 import { useEffect } from 'react'
 import socket from '../socket'
+import { setCurrentChannel } from '../state/ui/uiSlice'
 
 export default function ChatPage() {
-  useEffect(() => {
-    socket.connect()
-
-    return () => {
-      socket.disconnect()
-    }
-  }, [])
-
-  const { selectedChannelId } = useSelector((state) => state.ui.chat)
+  const { selectedChannelId, defaultChannelId } = useSelector((state) => state.ui.chat)
+  const dispatch = useDispatch()
   const {
     data: channels,
     isLoading: isChannelsLoading,
@@ -34,6 +28,26 @@ export default function ChatPage() {
     error: messagesError,
     refetch: refetchMessages,
   } = useGetMessagesQuery()
+
+  useEffect(() => {
+    socket.connect()
+
+    return () => {
+      socket.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleRemoveChannel = ({ id }) => {
+      if (id === selectedChannelId) {
+        dispatch(setCurrentChannel(defaultChannelId))
+      }
+    }
+
+    socket.on('removeChannel', handleRemoveChannel)
+    return () => socket.off('removeChannel', handleRemoveChannel)
+  }, [selectedChannelId, defaultChannelId, dispatch])
+
 
   if (isChannelsLoading || isMessagesLoading) {
     return (
@@ -60,7 +74,7 @@ export default function ChatPage() {
     )
   }
 
-  const currentChannel = channels.find(({ id }) => id === selectedChannelId)
+  const currentChannel = channels.find(({ id }) => id === selectedChannelId) ?? defaultChannelId
   const channelMessages = allMessages.filter(({ channelId }) => channelId === selectedChannelId)
   const messagesCount = channelMessages.length
 
