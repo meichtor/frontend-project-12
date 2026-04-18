@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '../../state/ui/uiSlice'
 import { useRemoveChannelMutation } from '../../state/channels/channelsApi'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 
 const ModalBody = () => {
@@ -13,6 +14,10 @@ const ModalBody = () => {
   const [removeChannel] = useRemoveChannelMutation()
 
   const handleClose = () => {
+    toast.success(t('modals.removeChannel.success'), {
+      position: 'top-right',
+      autoClose: 2000,
+    })
     dispatch(closeModal())
   }
 

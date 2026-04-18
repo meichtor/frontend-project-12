@@ -4,6 +4,7 @@ import { useAddMessageMutation } from '../state/messages/messagesApi';
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 const ChatForm = () => {
   const { t } = useTranslation()
@@ -33,7 +34,10 @@ const ChatForm = () => {
       await addMessage(message).unwrap()
       setInputMessage('')
     } catch (err) {
-      console.error(`${t('errors.sensing')}:`, err)
+      console.error(`${t('errors.sending')}:`, err)
+      toast.error(t('validation.networkError'), {
+        position: 'top-right'
+      })
     }
   }
 

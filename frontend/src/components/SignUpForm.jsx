@@ -7,6 +7,7 @@ import { routes } from '../routes'
 import { useDispatch } from 'react-redux'
 import { setUserData } from '../state/user/userSlice'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 const getSignUpSchema = (t) => Yup.object().shape({
   username: Yup.string()
@@ -43,12 +44,15 @@ const SignUpForm = () => {
 
       if (status === 409) {
         setErrors({
-          form: t('validation.signup.userExist')
+          form: t('validation.signup.userExists')
         })
       }
       else {
         setErrors({
           form: t('validation.networkError')
+        })
+        toast.error(t('validation.networkError'), {
+          position: 'top-right'
         })
       }
     }

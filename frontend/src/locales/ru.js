@@ -16,16 +16,19 @@ export default {
         title: 'Добавить канал',
         submitting: 'Отправка...',
         submit: 'Отправить',
+        success: 'Канал создан',
       },
       renameChannel: {
         title: 'Переименовать канал',
         submitting: 'Отправка...',
         submit: 'Отправить',
+        success: 'Канал переименован'
       },
       removeChannel: {
         title: 'Удалить канал',
         confirm: 'Уверены?',
         submit: 'Удалить',
+        success: 'Канал удален'
       },
     },
     validation: {

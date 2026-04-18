@@ -7,6 +7,7 @@ import { routes } from '../routes'
 import { useDispatch } from 'react-redux'
 import { setUserData } from '../state/user/userSlice'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 const getLoginSchema = (t) => Yup.object().shape({
   username: Yup.string()
@@ -35,10 +36,16 @@ const LoginForm = () => {
         setErrors({
           form: t('validation.login.invalidUserCredentials')
         })
+        toast.error(t('validation.login.invalidUserCredentials'), {
+          position: 'top-right'
+        })
       }
       else {
         setErrors({
           form: t('validation.networkError')
+        })
+        toast.error(t('validation.networkError'), {
+          position: 'top-right'
         })
       }
     }

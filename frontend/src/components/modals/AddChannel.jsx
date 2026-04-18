@@ -7,6 +7,7 @@ import { closeModal, setCurrentChannel } from '../../state/ui/uiSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 const getAddChannelSchema = (channels, t) => Yup.object().shape({
   channelName: Yup.string()
@@ -33,6 +34,10 @@ const ModalBody = () => {
   }, [])
 
   const handleClose = () => {
+    toast.success(t('modals.addChannel.success'), {
+      position: 'top-right',
+      autoClose: 2000,
+    })
     dispatch(closeModal())
   }
 

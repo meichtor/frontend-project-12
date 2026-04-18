@@ -3,6 +3,7 @@ import { Navbar, Container, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../state/user/userSlice';
 import { useTranslation } from 'react-i18next';
+import { ToastContainer } from 'react-toastify'
 
 export default function Layout() {
   const isAuth = useSelector(state => !!state.user.token)
@@ -26,6 +27,7 @@ export default function Layout() {
           }
         </Container>
       </Navbar>
+      <ToastContainer />
       <Outlet />
     </div>
   );
