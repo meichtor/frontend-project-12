@@ -5,6 +5,7 @@ import { PlusSquare } from "react-bootstrap-icons"
 import AddChannelModal from './modals/AddChannel.jsx'
 import RemoveChannelModal from './modals/RemoveChannel.jsx'
 import RenameChannelModal from './modals/RenameChannel.jsx'
+import { useTranslation } from 'react-i18next'
 
 const ChannelButton = ({ isCurrentChannel, handleChannelClick, channelName, channelId }) => (
   <button
@@ -18,6 +19,7 @@ const ChannelButton = ({ isCurrentChannel, handleChannelClick, channelName, chan
 )
 
 const ChannelItem = ({ channel }) => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const { selectedChannelId } = useSelector((state) => state.ui.chat)
   const isCurrentChannel = channel.id === selectedChannelId
@@ -51,8 +53,8 @@ const ChannelItem = ({ channel }) => {
           <Dropdown.Toggle split variant={isCurrentChannel ? 'secondary' : null} id="dropdown-split-basic" />
 
           <Dropdown.Menu>
-            <Dropdown.Item href="#" onClick={handleDeleteClick(channel.id)}>Удалить</Dropdown.Item>
-            <Dropdown.Item href="#" onClick={handleRenameClick(channel.id)}>Переименовать</Dropdown.Item>
+            <Dropdown.Item href="#" onClick={handleDeleteClick(channel.id)}>{t('channels.remove')}</Dropdown.Item>
+            <Dropdown.Item href="#" onClick={handleRenameClick(channel.id)}>{t('channels.rename')}</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </Nav.Item>
@@ -69,12 +71,13 @@ const ChannelItem = ({ channel }) => {
 }
 
 const ChannelsList = ({ channels, className }) => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
 
   return (
     <Col xs={4} md={2} className={className}>
       <div className='d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4'>
-        <b>Каналы</b>
+        <b>{t('channels.title')}</b>
         <button type='button' className='p-0 text-primary btn btn-group-vertical' onClick={() => dispatch(openModal({ type: 'addChannel' }))}>
           <PlusSquare size={20} />
           <span className='visually-hidden'>+</span>

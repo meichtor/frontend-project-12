@@ -6,30 +6,32 @@ import { useAddChannelMutation, useGetChannelsQuery } from '../../state/channels
 import { closeModal, setCurrentChannel } from '../../state/ui/uiSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
-const getAddChannelSchema = (channels) => Yup.object().shape({
+const getAddChannelSchema = (channels, t) => Yup.object().shape({
   channelName: Yup.string()
     .trim()
-    .required('Обязательное поле')
-    .min(3, 'От 3 до 20 символов')
-    .max(20, 'От 3 до 20 символов')
+    .required(t('validation.required'))
+    .min(3, t('validation.channels.channelNameLength'))
+    .max(20, t('validation.channels.channelNameLength'))
     .notOneOf(
       channels.map((ch) => ch.name),
-      'Должно быть уникальным',
+      t('validation.channels.channelNameUnique'),
     ),
 })
 
 const ModalBody = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const [addChannel] = useAddChannelMutation()
   const { data: channels } = useGetChannelsQuery()
 
-   const inputRef = useRef()
-  
-    useEffect(() => {
-      inputRef.current?.select()
-    }, [])
-  
+  const inputRef = useRef()
+
+  useEffect(() => {
+    inputRef.current?.select()
+  }, [])
+
   const handleClose = () => {
     dispatch(closeModal())
   }
@@ -44,8 +46,8 @@ const ModalBody = () => {
       handleClose()
     }
     catch (err) {
-      console.error('Ошибка отправки:', err)
-      setErrors({ channelName: 'Ошибка сети. Попробуйте снова' })
+      console.error(`${t('errors.sending')}:`, err)
+      setErrors({ channelName: t('validation.networkError') })
     }
     finally {
       setSubmitting(false)
@@ -55,7 +57,7 @@ const ModalBody = () => {
   return (
     <Formik
       initialValues={{ channelName: '' }}
-      validationSchema={getAddChannelSchema(channels)}
+      validationSchema={getAddChannelSchema(channels, t)}
       onSubmit={handleSubmit}
       validateOnBlur={false}
       validateOnChange={false}
@@ -77,10 +79,10 @@ const ModalBody = () => {
           </UiForm.Control.Feedback>
           <div className='d-flex justify-content-end gap-2'>
             <Button variant='secondary' type='button' onClick={handleClose}>
-              Отменить
+              {t('modals.cancel')}
             </Button>
             <Button disabled={isSubmitting} type='submit'>
-              {isSubmitting ? 'Отправка...' : 'Отправить'}
+              {isSubmitting ? t('modals.addChannel.submitting') : t('modals.addChannel.submit')}
             </Button>
           </div>
         </Form>
@@ -92,13 +94,14 @@ const ModalBody = () => {
 const AddChannelModal = () => {
   const modalInfo = useSelector((state) => state.ui.modal)
   const isOpen = modalInfo.isOpen && modalInfo.type === 'addChannel'
+  const { t } = useTranslation()
 
   if (!isOpen) return null
 
   return (
     <Modal
       showModal={isOpen}
-      modalTitle={'Добавить канал'}
+      modalTitle={t('modals.addChannel.title')}
     >
       <ModalBody />
     </Modal>

@@ -3,8 +3,10 @@ import { ArrowRightSquare } from "react-bootstrap-icons"
 import { useAddMessageMutation } from '../state/messages/messagesApi';
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next'
 
 const ChatForm = () => {
+  const { t } = useTranslation()
   const { selectedChannelId } = useSelector((state) => state.ui.chat)
   const { username } = useSelector((state) => state.user)
   const [addMessage, { isLoading }] = useAddMessageMutation()
@@ -31,7 +33,7 @@ const ChatForm = () => {
       await addMessage(message).unwrap()
       setInputMessage('')
     } catch (err) {
-      console.error('Ошибка отправки:', err)
+      console.error(`${t('errors.sensing')}:`, err)
     }
   }
 
@@ -47,8 +49,8 @@ const ChatForm = () => {
         <Form.Control
           ref={inputRef}
           name="new message"
-          placeholder="Введите сообщение"
-          aria-label="Новое сообщение"
+          placeholder={t('chat.placeholder')}
+          aria-label={t('chat.newMessage')}
           aria-describedby="basic-addon1"
           className="border-0 p-0 ps-2"
           value={inputMessage}
@@ -67,7 +69,7 @@ const ChatForm = () => {
             :
             <ArrowRightSquare size={20} />
           }
-          <span className="visually-hidden">Отправить</span>
+          <span className="visually-hidden">{t('chat.send')}</span>
         </Button>
       </InputGroup>
     </Form>

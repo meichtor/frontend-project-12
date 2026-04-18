@@ -1,8 +1,11 @@
 import { Col, Card, Row, Container } from 'react-bootstrap'
 import { Link } from 'react-router'
 import LoginForm from '../components/LoginForm'
+import { useTranslation } from 'react-i18next'
 
 export default function Login() {
+  const { t } = useTranslation()
+
   return (
     <Container fluid className='h-100'>
       <Row className="justify-content-center align-content-center h-100">
@@ -13,7 +16,7 @@ export default function Login() {
             </Card.Body>
             <Card.Footer className="text-muted p-4">
               <p className='text-center'>
-                Нет аккаунта? <Link to={'/signup'}>Регистрация</Link>
+                {t('login.noAccount')} <Link to={'/signup'}>{t('login.signup')}</Link>
               </p>
             </Card.Footer>
           </Card>

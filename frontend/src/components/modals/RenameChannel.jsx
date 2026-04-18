@@ -6,21 +6,23 @@ import { useGetChannelsQuery, useRenameChannelMutation } from '../../state/chann
 import { closeModal } from '../../state/ui/uiSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
-const getAddChannelSchema = (channels) => Yup.object().shape({
+const getAddChannelSchema = (channels, t) => Yup.object().shape({
   channelName: Yup.string()
     .trim()
-    .required('Обязательное поле')
-    .min(3, 'От 3 до 20 символов')
-    .max(20, 'От 3 до 20 символов')
+    .required(t('validation.required'))
+    .min(3, t('validation.channels.channelNameLength'))
+    .max(20, t('validation.channels.channelNameLength'))
     .notOneOf(
       channels.map((ch) => ch.name),
-      'Должно быть уникальным',
+      t('validation.channels.channelNameUnique'),
     ),
 })
 
 const ModalBody = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const [renameChannel] = useRenameChannelMutation()
   const { data: channels } = useGetChannelsQuery()
   const modalInfo = useSelector((state) => state.ui.modal.extra)
@@ -49,8 +51,8 @@ const ModalBody = () => {
       handleClose()
     }
     catch (err) {
-      console.error('Ошибка отправки:', err)
-      setErrors({ channelName: 'Ошибка сети. Попробуйте снова' })
+      console.error(`${t('errors.sending')}:`, err)
+      setErrors({ channelName: t('validation.networkError') })
     }
     finally {
       setSubmitting(false)
@@ -60,7 +62,7 @@ const ModalBody = () => {
   return (
     <Formik
       initialValues={{ channelName: currentChannel.name }}
-      validationSchema={getAddChannelSchema(channels)}
+      validationSchema={getAddChannelSchema(channels, t)}
       onSubmit={handleSubmit}
       validateOnBlur={false}
       validateOnChange={false}
@@ -85,10 +87,10 @@ const ModalBody = () => {
           </UiForm.Group>
           <div className='d-flex justify-content-end gap-2'>
             <Button variant='secondary' type='button' onClick={handleClose}>
-              Отменить
+              {t('modals.cancel')}
             </Button>
             <Button disabled={isSubmitting} type='submit'>
-              {isSubmitting ? 'Отправка...' : 'Отправить'}
+              {isSubmitting ? t('modals.renameChannel.submitting') : t('modals.renameChannel.submit')}
             </Button>
           </div>
         </Form>
@@ -98,6 +100,7 @@ const ModalBody = () => {
 }
 
 const RenameChannelModal = () => {
+  const { t } = useTranslation()
   const modalInfo = useSelector((state) => state.ui.modal)
   const isOpen = modalInfo.isOpen && modalInfo.type === 'renameChannel'
 
@@ -106,7 +109,7 @@ const RenameChannelModal = () => {
   return (
     <Modal
       showModal={isOpen}
-      modalTitle={'Переименовать канал'}
+      modalTitle={t('modals.renameChannel.title')}
     >
       <ModalBody />
     </Modal>

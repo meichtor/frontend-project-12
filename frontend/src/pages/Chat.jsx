@@ -10,8 +10,10 @@ import ChatForm from '../components/ChatForm'
 import { useEffect } from 'react'
 import socket from '../socket'
 import { setCurrentChannel } from '../state/ui/uiSlice'
+import { useTranslation } from 'react-i18next'
 
 export default function ChatPage() {
+  const { t } = useTranslation()
   const { selectedChannelId, defaultChannelId } = useSelector((state) => state.ui.chat)
   const dispatch = useDispatch()
   const {
@@ -64,10 +66,10 @@ export default function ChatPage() {
     return (
       <Container className='my-4 w-100 h-100'>
         <Alert variant="danger" className="m-3">
-          <Alert.Heading>Ошибка</Alert.Heading>
-          <p>{message || 'Попробуйте обновить страницу'}</p>
+          <Alert.Heading>{t('errors.error')}</Alert.Heading>
+          <p>{message || t('errors.tryReload')}</p>
           <Button className='mt-3' variant="outline-danger" onClick={refetch}>
-            Попробовать снова
+            {t('errors.retry')}
           </Button>
         </Alert>
       </Container>

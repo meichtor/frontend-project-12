@@ -6,17 +6,20 @@ import axios from 'axios'
 import { routes } from '../routes'
 import { useDispatch } from 'react-redux'
 import { setUserData } from '../state/user/userSlice'
+import { useTranslation } from 'react-i18next'
 
-const LoginSchema = Yup.object().shape({
+const getLoginSchema = (t) => Yup.object().shape({
   username: Yup.string()
-    .required('Обязательное поле'),
+    .required(t('validation.required')),
   password: Yup.string()
-    .required('Обязательное поле'),
+    .required(t('validation.required')),
 })
 
 const LoginForm = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const schema = getLoginSchema(t)
 
   const handleSubmit = async (values, { setErrors, setSubmitting }) => {
     try {
@@ -30,12 +33,12 @@ const LoginForm = () => {
 
       if (status === 401) {
         setErrors({
-          form: 'Неверное имя пользователя или пароль'
+          form: t('validation.login.invalidUserCredentials')
         })
       }
       else {
         setErrors({
-          form: 'Ошибка сети. Попробуйте снова'
+          form: t('validation.networkError')
         })
       }
     }
@@ -47,18 +50,18 @@ const LoginForm = () => {
   return (
     <Formik
       initialValues={{ username: '', password: '' }}
-      validationSchema={LoginSchema}
+      validationSchema={schema}
       onSubmit={handleSubmit}
     >
       {({ errors, touched, isSubmitting }) => (
         <Form className='d-flex flex-column col-12'>
-          <h1 className='text-center mb-4'>Войти</h1>
-          <FloatingLabel controlId="username" label="Ваш Ник" className="mb-3">
+          <h1 className='text-center mb-4'>{t('login.title')}</h1>
+          <FloatingLabel controlId="username" label={t('login.username')} className="mb-3">
             <UiForm.Control
               as={Field}
               name='username'
               type="text"
-              placeholder="Ваш Ник"
+              placeholder={t('login.username')}
               autoComplete='username'
               required
               isInvalid={(!!errors.username || !!errors.form) && touched.username}
@@ -67,12 +70,12 @@ const LoginForm = () => {
               {errors.username}
             </UiForm.Control.Feedback>
           </FloatingLabel>
-          <FloatingLabel controlId="password" label="Ваш Пароль" className="mb-3">
+          <FloatingLabel controlId="password" label={t('login.password')} className="mb-3">
             <UiForm.Control
               as={Field}
               name='password'
               type='password'
-              placeholder="Ваш Пароль"
+              placeholder={t('login.password')}
               autoComplete='current-password'
               required
               isInvalid={(!!errors.password || !!errors.form) && touched.password}
@@ -82,7 +85,7 @@ const LoginForm = () => {
             </UiForm.Control.Feedback>
           </FloatingLabel>
           <Button disabled={isSubmitting} type='submit' variant='outline-primary'>
-            {isSubmitting ? 'Вход...' : 'Войти'}
+            {isSubmitting ? t('login.submitting') : t('login.submit')}
           </Button>
         </Form>
       )}

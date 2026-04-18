@@ -3,10 +3,12 @@ import Modal from '../ui/Modal'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '../../state/ui/uiSlice'
 import { useRemoveChannelMutation } from '../../state/channels/channelsApi'
+import { useTranslation } from 'react-i18next'
 
 
 const ModalBody = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const modalInfo = useSelector((state) => state.ui.modal.extra)
   const [removeChannel] = useRemoveChannelMutation()
 
@@ -21,13 +23,13 @@ const ModalBody = () => {
 
   return (
     <>
-      <p className='lead'>Уверены?</p>
+      <p className='lead'>{t('modals.removeChannel.confirm')}</p>
       <div className='d-flex justify-content-end gap-2'>
         <Button variant='secondary' type='button' onClick={handleClose}>
-          Отменить
+          {t('modals.cancel')}
         </Button>
         <Button variant='danger' type='button' onClick={() => handleDelete()}>
-          Удалить
+          {t('modals.removeChannel.submit')}
         </Button>
       </div>
     </>
@@ -37,13 +39,14 @@ const ModalBody = () => {
 const RemoveChannelModal = () => {
   const modalInfo = useSelector((state) => state.ui.modal)
   const isOpen = modalInfo.isOpen && modalInfo.type === 'removeChannel'
+  const { t } = useTranslation()
 
   if (!isOpen) return null
 
   return (
     <Modal
       showModal={isOpen}
-      modalTitle={'Удалить канал'}>
+      modalTitle={t('modals.removeChannel.title')}>
       <ModalBody />
     </Modal>
   )
