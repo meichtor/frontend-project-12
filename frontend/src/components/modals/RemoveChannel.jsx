@@ -14,15 +14,15 @@ const ModalBody = () => {
   const [removeChannel] = useRemoveChannelMutation()
 
   const handleClose = () => {
-    toast.success(t('modals.removeChannel.success'), {
-      position: 'top-right',
-      autoClose: 2000,
-    })
     dispatch(closeModal())
   }
 
   const handleDelete = async () => {
     await removeChannel(modalInfo.channelId).unwrap()
+    toast.success(t('modals.removeChannel.success'), {
+      position: 'top-right',
+      autoClose: 2000,
+    })
     handleClose()
   }
 

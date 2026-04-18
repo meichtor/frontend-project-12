@@ -37,10 +37,6 @@ const ModalBody = () => {
   }, [])
 
   const handleClose = () => {
-    toast.success(t('modals.renameChannel.success'), {
-      position: 'top-right',
-      autoClose: 2000,
-    })
     dispatch(closeModal())
   }
 
@@ -53,6 +49,10 @@ const ModalBody = () => {
 
     try {
       await renameChannel(payload).unwrap()
+      toast.success(t('modals.renameChannel.success'), {
+        position: 'top-right',
+        autoClose: 2000,
+      })
       handleClose()
     }
     catch (err) {

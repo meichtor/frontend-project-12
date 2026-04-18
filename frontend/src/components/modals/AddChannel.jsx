@@ -36,10 +36,6 @@ const ModalBody = () => {
   }, [])
 
   const handleClose = () => {
-    toast.success(t('modals.addChannel.success'), {
-      position: 'top-right',
-      autoClose: 2000,
-    })
     dispatch(closeModal())
   }
 
@@ -51,6 +47,10 @@ const ModalBody = () => {
     try {
       const newChannel = await addChannel(channel).unwrap()
       dispatch(setCurrentChannel(newChannel.id))
+      toast.success(t('modals.addChannel.success'), {
+        position: 'top-right',
+        autoClose: 2000,
+      })
       handleClose()
     }
     catch (err) {
