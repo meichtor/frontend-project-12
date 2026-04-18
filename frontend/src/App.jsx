@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 import Layout from './components/Layout'
 import { useSelector } from 'react-redux'
+import SignUp from './pages/SignUp'
 
 const PrivateRoute = ({ children }) => {
   const location = useLocation()
@@ -24,6 +25,7 @@ function App() {
             </PrivateRoute>
           )} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

@@ -14,15 +14,6 @@ const LoginSchema = Yup.object().shape({
     .required('Обязательное поле'),
 })
 
-const ErrorTooltip = ({ name, errors }) => {
-  const error = errors[name]
-  return (
-    <UiForm.Control.Feedback type="invalid" tooltip>
-      {error}
-    </UiForm.Control.Feedback>
-  )
-}
-
 const LoginForm = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -72,9 +63,9 @@ const LoginForm = () => {
               required
               isInvalid={(!!errors.username || !!errors.form) && touched.username}
             />
-            {errors.username &&
-              <ErrorTooltip name='username' errors={errors} />
-            }
+            <UiForm.Control.Feedback type="invalid" tooltip>
+              {errors.username}
+            </UiForm.Control.Feedback>
           </FloatingLabel>
           <FloatingLabel controlId="password" label="Ваш Пароль" className="mb-3">
             <UiForm.Control
@@ -86,12 +77,9 @@ const LoginForm = () => {
               required
               isInvalid={(!!errors.password || !!errors.form) && touched.password}
             />
-            {errors.password &&
-              <ErrorTooltip name='password' errors={errors} />
-            }
-            {errors.form &&
-              <ErrorTooltip name='form' errors={errors} />
-            }
+            <UiForm.Control.Feedback type="invalid" tooltip>
+              {errors.password || errors.form}
+            </UiForm.Control.Feedback>
           </FloatingLabel>
           <Button disabled={isSubmitting} type='submit' variant='outline-primary'>
             {isSubmitting ? 'Вход...' : 'Войти'}
