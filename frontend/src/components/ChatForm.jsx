@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import initProfanity from "../profanity";
 
 const ChatForm = () => {
   const { t } = useTranslation()
@@ -14,6 +15,7 @@ const ChatForm = () => {
   const [inputMessage, setInputMessage] = useState('')
   const inputRef = useRef(null);
   const submitDisabled = inputMessage === '' || isLoading
+  const filter = initProfanity()
 
   const handleChangeMessage = (e) => {
     const { value } = e.target
@@ -22,8 +24,8 @@ const ChatForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const body = inputMessage.trim()
-
+    const cleanValue = filter.clean(inputMessage)
+    const body = cleanValue.trim()
     const message = {
       channelId: selectedChannelId,
       body,

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import initProfanity from '../../profanity'
 
 const getAddChannelSchema = (channels, t) => Yup.object().shape({
   channelName: Yup.string()
@@ -26,6 +27,7 @@ const ModalBody = () => {
   const { t } = useTranslation()
   const [addChannel] = useAddChannelMutation()
   const { data: channels } = useGetChannelsQuery()
+  const filter = initProfanity()
 
   const inputRef = useRef()
 
@@ -43,7 +45,8 @@ const ModalBody = () => {
 
   const handleSubmit = async (values, { setErrors, setSubmitting }) => {
     const { channelName } = values
-    const channel = { name: channelName }
+    const cleanName = filter.clean(channelName)
+    const channel = { name: cleanName }
 
     try {
       const newChannel = await addChannel(channel).unwrap()
