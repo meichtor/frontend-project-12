@@ -37,9 +37,7 @@ const ChatForm = () => {
       setInputMessage('')
     } catch (err) {
       console.error(`${t('errors.sending')}:`, err)
-      toast.error(t('validation.networkError'), {
-        position: 'top-right'
-      })
+      toast.error(t('validation.networkError'))
     }
   }
 
@@ -47,7 +45,7 @@ const ChatForm = () => {
     if (!isLoading && inputRef.current) {
       inputRef.current.focus()
     }
-  }, [isLoading])
+  }, [isLoading, selectedChannelId])
 
   return (
     <Form noValidate className="py-1 border rounded-2" onSubmit={handleSubmit}>
@@ -59,6 +57,7 @@ const ChatForm = () => {
           aria-label={t('chat.newMessage')}
           aria-describedby="basic-addon1"
           className="border-0 p-0 ps-2"
+          autoComplete='off'
           value={inputMessage}
           onChange={handleChangeMessage}
           disabled={isLoading}

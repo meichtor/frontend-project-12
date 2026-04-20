@@ -1,13 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { API_URL } from '../../routes'
+import { API_URL } from '../../api'
 import socket from '../../socket'
 
 const messagesApi = createApi({
   reducerPath: 'messagesApi',
   baseQuery: fetchBaseQuery(
     {
-      baseUrl:
-        API_URL,
+      baseUrl: API_URL,
       prepareHeaders: (headers, { getState }) => {
         const { token } = getState().user
         if (token) {
@@ -29,6 +28,8 @@ const messagesApi = createApi({
         try {
           await cacheDataLoaded
 
+          socket.connect()
+
           const newMessageHandler = (message) =>
             updateCachedData((draft) => {
               draft.push(message)
@@ -48,6 +49,7 @@ const messagesApi = createApi({
         await cacheEntryRemoved
         socket.off('newMessage')
         socket.off('removeChannel')
+        socket.disconnect()
       },
     }),
     addMessage: builder.mutation({

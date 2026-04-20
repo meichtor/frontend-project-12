@@ -3,19 +3,16 @@ import { useGetChannelsQuery } from '../state/channels/channelsApi'
 import { useGetMessagesQuery } from '../state/messages/messagesApi'
 import ChannelsList from '../components/ChannelsList'
 import Loader from '../components/ui/Loader'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import ChatHeader from '../components/ChatHeader'
 import ChatMessages from '../components/ChatMessages'
 import ChatForm from '../components/ChatForm'
-import { useEffect } from 'react'
-import socket from '../socket'
-import { setCurrentChannel } from '../state/ui/uiSlice'
 import { useTranslation } from 'react-i18next'
+import { Navigate } from 'react-router'
 
 export default function ChatPage() {
   const { t } = useTranslation()
   const { selectedChannelId, defaultChannelId } = useSelector((state) => state.ui.chat)
-  const dispatch = useDispatch()
   const {
     data: channels,
     isLoading: isChannelsLoading,
@@ -31,25 +28,9 @@ export default function ChatPage() {
     refetch: refetchMessages,
   } = useGetMessagesQuery()
 
-  useEffect(() => {
-    socket.connect()
-
-    return () => {
-      socket.disconnect()
-    }
-  }, [])
-
-  useEffect(() => {
-    const handleRemoveChannel = ({ id }) => {
-      if (id === selectedChannelId) {
-        dispatch(setCurrentChannel(defaultChannelId))
-      }
-    }
-
-    socket.on('removeChannel', handleRemoveChannel)
-    return () => socket.off('removeChannel', handleRemoveChannel)
-  }, [selectedChannelId, defaultChannelId, dispatch])
-
+  if (messagesError?.status === 401 || channelsError?.status === 401) {
+    return <Navigate to={'/login'} />
+  }
 
   if (isChannelsLoading || isMessagesLoading) {
     return (
@@ -81,16 +62,13 @@ export default function ChatPage() {
   const messagesCount = channelMessages.length
 
   return (
-    <Container className='my-4 h-100 rounded shadow'>
+    <Container className='my-4 h-100 rounded shadow overflow-hidden'>
       <Row className='relative h-100 bg-white flex-md-row'>
-        <ChannelsList
-          channels={channels}
-          className={'border-end px-0 bg-light flex-column h-100 d-flex'}
-        />
+        <ChannelsList channels={channels} />
         <Col className="col p-0 h-100">
           <div className='d-flex flex-column h-100'>
             <ChatHeader channel={currentChannel} messagesCount={messagesCount} />
-            <ChatMessages messages={channelMessages} />
+            <ChatMessages messages={channelMessages} selectedChannelId={selectedChannelId} />
             <div className='mt-auto px-5 py-3'>
               <ChatForm />
             </div>

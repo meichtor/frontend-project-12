@@ -2,9 +2,6 @@ import { Col, Nav, ButtonGroup, Dropdown } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { openModal, setCurrentChannel } from '../state/ui/uiSlice'
 import { PlusSquare } from "react-bootstrap-icons"
-import AddChannelModal from './modals/AddChannel.jsx'
-import RemoveChannelModal from './modals/RemoveChannel.jsx'
-import RenameChannelModal from './modals/RenameChannel.jsx'
 import { useTranslation } from 'react-i18next'
 
 const ChannelButton = ({ isCurrentChannel, handleChannelClick, channelName, channelId }) => (
@@ -40,8 +37,8 @@ const ChannelItem = ({ channel }) => {
   }
 
   return (
-    isRemovable ?
-      <Nav.Item as={'li'} className='w-100'>
+    <Nav.Item as={'li'} className='w-100'>{
+      isRemovable ?
         <Dropdown as={ButtonGroup} className='d-flex'>
           <ChannelButton
             channelId={channel.id}
@@ -57,28 +54,31 @@ const ChannelItem = ({ channel }) => {
             <Dropdown.Item href="#" onClick={handleRenameClick(channel.id)}>{t('channels.rename')}</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-      </Nav.Item>
-      :
-      <Nav.Item as={'li'} className='w-100'>
+        :
         <ChannelButton
           channelId={channel.id}
           channelName={channel.name}
           isCurrentChannel={isCurrentChannel}
           handleChannelClick={handleChannelClick}
         />
-      </Nav.Item>
+    }
+    </Nav.Item>
   )
 }
 
-const ChannelsList = ({ channels, className }) => {
+const ChannelsList = ({ channels }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
+  const handleAddChannelClick = () => {
+    dispatch(openModal({ type: 'addChannel' }))
+  }
+
   return (
-    <Col xs={4} md={2} className={className}>
+    <Col xs={4} md={2} className='border-end px-0 bg-light flex-column h-100 d-flex'>
       <div className='d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4'>
         <b>{t('channels.title')}</b>
-        <button type='button' className='p-0 text-primary btn btn-group-vertical' onClick={() => dispatch(openModal({ type: 'addChannel' }))}>
+        <button type='button' className='p-0 text-primary btn btn-group-vertical' onClick={handleAddChannelClick}>
           <PlusSquare size={20} />
           <span className='visually-hidden'>+</span>
         </button>
@@ -88,10 +88,7 @@ const ChannelsList = ({ channels, className }) => {
           <ChannelItem key={channel.id} channel={channel} />
         ))}
       </Nav>
-      <AddChannelModal />
-      <RemoveChannelModal />
-      <RenameChannelModal />
-    </Col>
+    </Col >
   )
 }
 

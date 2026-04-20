@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
-import { routes } from '../routes'
+import { routes } from '../api'
 import { useDispatch } from 'react-redux'
 import { setUserData } from '../state/user/userSlice'
 import { useTranslation } from 'react-i18next'
@@ -43,17 +43,11 @@ const SignUpForm = () => {
       const status = error.response?.status
 
       if (status === 409) {
-        setErrors({
-          form: t('validation.signup.userExists')
-        })
+        setErrors({ form: t('validation.signup.userExists') })
       }
       else {
-        setErrors({
-          form: t('validation.networkError')
-        })
-        toast.error(t('validation.networkError'), {
-          position: 'top-right'
-        })
+        setErrors({ form: t('validation.networkError') })
+        toast.error(t('validation.networkError'))
       }
     }
     finally {

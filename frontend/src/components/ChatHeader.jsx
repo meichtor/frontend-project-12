@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
-const ChatHeader = ({ channel, messagesCount }) => {
+const ChatHeader = ({ channel, messagesCount = 0 }) => {
   const { t } = useTranslation()
 
   return (

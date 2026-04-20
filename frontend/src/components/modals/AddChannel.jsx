@@ -4,7 +4,7 @@ import Modal from '../ui/Modal'
 import * as Yup from 'yup'
 import { useAddChannelMutation, useGetChannelsQuery } from '../../state/channels/channelsApi'
 import { closeModal, setCurrentChannel } from '../../state/ui/uiSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -22,7 +22,7 @@ const getAddChannelSchema = (channels, t) => Yup.object().shape({
     ),
 })
 
-const ModalBody = () => {
+const AddChannel = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [addChannel] = useAddChannelMutation()
@@ -47,15 +47,13 @@ const ModalBody = () => {
     try {
       const newChannel = await addChannel(channel).unwrap()
       dispatch(setCurrentChannel(newChannel.id))
-      toast.success(t('modals.addChannel.success'), {
-        position: 'top-right',
-        autoClose: 2000,
-      })
+      toast.success(t('modals.addChannel.success'), { autoClose: 2000 })
       handleClose()
     }
     catch (err) {
       console.error(`${t('errors.sending')}:`, err)
       setErrors({ channelName: t('validation.networkError') })
+      toast.error(t('validation.networkError'))
     }
     finally {
       setSubmitting(false)
@@ -72,16 +70,18 @@ const ModalBody = () => {
     >
       {({ errors, isSubmitting }) => (
         <Form>
-          <UiForm.Control
-            as={Field}
-            innerRef={inputRef}
-            name='channelName'
-            type="text"
-            placeholder=""
-            autoFocus
-            isInvalid={!!errors.channelName}
-            className='mb-2'
-          />
+          <Field name='channelName'>
+            {({ field }) => (
+              <UiForm.Control
+                {...field}
+                ref={inputRef}
+                type="text"
+                placeholder=""
+                autoFocus
+                isInvalid={!!errors.channelName}
+                className='mb-2'
+              />)}
+          </Field>
           <UiForm.Control.Feedback type="invalid">
             {errors.channelName}
           </UiForm.Control.Feedback>
@@ -99,21 +99,4 @@ const ModalBody = () => {
   )
 }
 
-const AddChannelModal = () => {
-  const modalInfo = useSelector((state) => state.ui.modal)
-  const isOpen = modalInfo.isOpen && modalInfo.type === 'addChannel'
-  const { t } = useTranslation()
-
-  if (!isOpen) return null
-
-  return (
-    <Modal
-      showModal={isOpen}
-      modalTitle={t('modals.addChannel.title')}
-    >
-      <ModalBody />
-    </Modal>
-  )
-}
-
-export default AddChannelModal
+export default AddChannel

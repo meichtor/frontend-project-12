@@ -5,6 +5,7 @@ import NotFound from './pages/NotFound'
 import Layout from './components/Layout'
 import { useSelector } from 'react-redux'
 import SignUp from './pages/SignUp'
+import ChatModal from './components/modals/ChatModal'
 
 const PrivateRoute = ({ children }) => {
   const location = useLocation()
@@ -17,6 +18,7 @@ const PrivateRoute = ({ children }) => {
 function App() {
   return (
     <BrowserRouter>
+      <ChatModal />
       <Routes>
         <Route path="/" element={<Layout />}>\
           <Route index element={(

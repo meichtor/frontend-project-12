@@ -6,8 +6,7 @@ import { useRemoveChannelMutation } from '../../state/channels/channelsApi'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
-
-const ModalBody = () => {
+const RemoveChannel = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const modalInfo = useSelector((state) => state.ui.modal.extra)
@@ -18,12 +17,18 @@ const ModalBody = () => {
   }
 
   const handleDelete = async () => {
-    await removeChannel(modalInfo.channelId).unwrap()
-    toast.success(t('modals.removeChannel.success'), {
-      position: 'top-right',
-      autoClose: 2000,
-    })
-    handleClose()
+    try {
+      await removeChannel(modalInfo.channelId).unwrap()
+      toast.success(t('modals.removeChannel.success'), {
+        position: 'top-right',
+        autoClose: 2000,
+      })
+      handleClose()
+    }
+    catch (e) {
+      console.error(`${t('errors.sending')}:`, e)
+      toast.error(t('validation.networkError'))
+    }
   }
 
   return (
@@ -41,20 +46,4 @@ const ModalBody = () => {
   )
 }
 
-const RemoveChannelModal = () => {
-  const modalInfo = useSelector((state) => state.ui.modal)
-  const isOpen = modalInfo.isOpen && modalInfo.type === 'removeChannel'
-  const { t } = useTranslation()
-
-  if (!isOpen) return null
-
-  return (
-    <Modal
-      showModal={isOpen}
-      modalTitle={t('modals.removeChannel.title')}>
-      <ModalBody />
-    </Modal>
-  )
-}
-
-export default RemoveChannelModal
+export default RemoveChannel

@@ -1,13 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { API_URL } from '../../routes'
+import { API_URL } from '../../api'
 import socket from '../../socket'
+import { channelRemoved } from '../ui/uiSlice'
 
 const channelsApi = createApi({
   reducerPath: 'channelsApi',
   baseQuery: fetchBaseQuery(
     {
-      baseUrl:
-        API_URL,
+      baseUrl: API_URL,
       prepareHeaders: (headers, { getState }) => {
         const { token } = getState().user
         if (token) {
@@ -24,10 +24,12 @@ const channelsApi = createApi({
       providesTags: ['Channels'],
       async onCacheEntryAdded(
         _arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved, dispatch },
       ) {
         try {
           await cacheDataLoaded
+
+          socket.connect()
 
           const newChannelHandler = (channel) =>
             updateCachedData((draft) => {
@@ -42,10 +44,12 @@ const channelsApi = createApi({
               }
             })
 
-          const removeChannelHandler = ({ id }) =>
+          const removeChannelHandler = ({ id }) => {
             updateCachedData((draft) => {
               return draft.filter(ch => ch.id !== id)
             })
+            dispatch(channelRemoved(id))
+          }
 
           socket.addEventListener('newChannel', newChannelHandler)
           socket.addEventListener('renameChannel', renameChannelHandler)
@@ -58,6 +62,7 @@ const channelsApi = createApi({
         socket.off('newChannel')
         socket.off('removeChannel')
         socket.off('renameChannel')
+        socket.disconnect()
       },
     }),
     addChannel: builder.mutation({

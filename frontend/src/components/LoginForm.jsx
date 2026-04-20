@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
-import { routes } from '../routes'
+import { routes } from '../api'
 import { useDispatch } from 'react-redux'
 import { setUserData } from '../state/user/userSlice'
 import { useTranslation } from 'react-i18next'
@@ -33,20 +33,12 @@ const LoginForm = () => {
       const status = error.response?.status
 
       if (status === 401) {
-        setErrors({
-          form: t('validation.login.invalidUserCredentials')
-        })
-        toast.error(t('validation.login.invalidUserCredentials'), {
-          position: 'top-right'
-        })
+        setErrors({ form: t('validation.login.invalidUserCredentials') })
+        toast.error(t('validation.login.invalidUserCredentials'))
       }
       else {
-        setErrors({
-          form: t('validation.networkError')
-        })
-        toast.error(t('validation.networkError'), {
-          position: 'top-right'
-        })
+        setErrors({form: t('validation.networkError')})
+        toast.error(t('validation.networkError'))
       }
     }
     finally {
@@ -64,29 +56,35 @@ const LoginForm = () => {
         <Form className='d-flex flex-column col-12'>
           <h1 className='text-center mb-4'>{t('login.title')}</h1>
           <FloatingLabel controlId="username" label={t('login.username')} className="mb-3">
-            <UiForm.Control
-              as={Field}
-              name='username'
-              type="text"
-              placeholder={t('login.username')}
-              autoComplete='username'
-              required
-              isInvalid={(!!errors.username || !!errors.form) && touched.username}
-            />
+            <Field name='username'>
+              {({ field }) => (
+                <UiForm.Control
+                  {...field}
+                  type="text"
+                  placeholder={t('login.username')}
+                  autoComplete='username'
+                  required
+                  autoFocus
+                  isInvalid={(!!errors.username || !!errors.form) && touched.username}
+                />)}
+            </Field>
             <UiForm.Control.Feedback type="invalid" tooltip>
               {errors.username}
             </UiForm.Control.Feedback>
           </FloatingLabel>
           <FloatingLabel controlId="password" label={t('login.password')} className="mb-3">
-            <UiForm.Control
-              as={Field}
-              name='password'
-              type='password'
-              placeholder={t('login.password')}
-              autoComplete='current-password'
-              required
-              isInvalid={(!!errors.password || !!errors.form) && touched.password}
-            />
+            <Field name='password'>
+              {({ field }) => (
+                <UiForm.Control
+                  {...field}
+                  type='password'
+                  placeholder={t('login.password')}
+                  autoComplete='current-password'
+                  required
+                  isInvalid={(!!errors.password || !!errors.form) && touched.password}
+                />
+              )}
+            </Field>
             <UiForm.Control.Feedback type="invalid" tooltip>
               {errors.password || errors.form}
             </UiForm.Control.Feedback>

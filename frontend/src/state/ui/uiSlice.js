@@ -30,10 +30,15 @@ const uiSlice = createSlice({
       state.modal.isOpen = false
       state.modal.type = null
       state.modal.extra = null
-    }
-  }
+    },
+    channelRemoved: (state, action) => {
+      if (state.chat.selectedChannelId === action.payload) {
+        state.chat.selectedChannelId = initialState.chat.defaultChannelId
+      }
+    },
+  },
 })
 
-export const { setCurrentChannel, openModal, closeModal } = uiSlice.actions
+export const { setCurrentChannel, openModal, closeModal, channelRemoved } = uiSlice.actions
 
 export default uiSlice.reducer

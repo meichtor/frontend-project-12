@@ -11,7 +11,7 @@ export default function Layout() {
   const { t } = useTranslation()
 
   return (
-    <div className="d-flex flex-column min-vh-100 h-100">
+    <div className="d-flex flex-column h-100">
       <Navbar className='shadow-sm' bg="white" expand="lg">
         <Container>
           <Navbar.Brand as={RouterNavLink} to="/">

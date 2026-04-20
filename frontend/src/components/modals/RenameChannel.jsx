@@ -21,7 +21,7 @@ const getAddChannelSchema = (channels, t) => Yup.object().shape({
     ),
 })
 
-const ModalBody = () => {
+const RenameChannel = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [renameChannel] = useRenameChannelMutation()
@@ -49,15 +49,13 @@ const ModalBody = () => {
 
     try {
       await renameChannel(payload).unwrap()
-      toast.success(t('modals.renameChannel.success'), {
-        position: 'top-right',
-        autoClose: 2000,
-      })
+      toast.success(t('modals.renameChannel.success'), { autoClose: 2000 })
       handleClose()
     }
     catch (err) {
       console.error(`${t('errors.sending')}:`, err)
       setErrors({ channelName: t('validation.networkError') })
+      toast.error(t('validation.networkError'))
     }
     finally {
       setSubmitting(false)
@@ -75,17 +73,20 @@ const ModalBody = () => {
       {({ errors, isSubmitting }) => (
         <Form>
           <UiForm.Group className='mb-2'>
-            <UiForm.Control
-              as={Field}
-              innerRef={inputRef}
-              name='channelName'
-              type="text"
-              placeholder=""
-              isInvalid={!!errors.channelName}
-              className='mb-2'
-              onFocus={(e) => e.target.select()}
-              autoFocus={true}
-            />
+            <Field name='channelName'>
+              {({ field }) => (
+                <UiForm.Control
+                  {...field}
+                  ref={inputRef}
+                  type="text"
+                  placeholder=""
+                  isInvalid={!!errors.channelName}
+                  className='mb-2'
+                  onFocus={(e) => e.target.select()}
+                  autoFocus={true}
+                />
+              )}
+            </Field>
             <UiForm.Control.Feedback type="invalid">
               {errors.channelName}
             </UiForm.Control.Feedback>
@@ -104,21 +105,4 @@ const ModalBody = () => {
   )
 }
 
-const RenameChannelModal = () => {
-  const { t } = useTranslation()
-  const modalInfo = useSelector((state) => state.ui.modal)
-  const isOpen = modalInfo.isOpen && modalInfo.type === 'renameChannel'
-
-  if (!isOpen) return null
-
-  return (
-    <Modal
-      showModal={isOpen}
-      modalTitle={t('modals.renameChannel.title')}
-    >
-      <ModalBody />
-    </Modal>
-  )
-}
-
-export default RenameChannelModal
+export default RenameChannel
