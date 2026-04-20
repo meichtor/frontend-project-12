@@ -16,7 +16,7 @@ const getAddChannelSchema = (channels, t) => Yup.object().shape({
     .min(3, t('validation.channels.channelNameLength'))
     .max(20, t('validation.channels.channelNameLength'))
     .notOneOf(
-      channels.map((ch) => ch.name),
+      channels.map(ch => ch.name),
       t('validation.channels.channelNameUnique'),
     ),
 })
@@ -26,9 +26,9 @@ const RenameChannel = () => {
   const { t } = useTranslation()
   const [renameChannel] = useRenameChannelMutation()
   const { data: channels } = useGetChannelsQuery()
-  const modalInfo = useSelector((state) => state.ui.modal.extra)
+  const modalInfo = useSelector(state => state.ui.modal.extra)
   const selectedChannelId = modalInfo.channelId
-  const currentChannel = channels.find((ch) => ch.id === selectedChannelId)
+  const currentChannel = channels.find(ch => ch.id === selectedChannelId)
 
   const inputRef = useRef()
 
@@ -44,7 +44,7 @@ const RenameChannel = () => {
     const { channelName } = values
     const payload = {
       channel: { name: channelName },
-      id: selectedChannelId
+      id: selectedChannelId,
     }
 
     try {
@@ -72,31 +72,32 @@ const RenameChannel = () => {
     >
       {({ errors, isSubmitting }) => (
         <Form>
-          <UiForm.Group className='mb-2'>
-            <UiForm.Label hidden htmlFor='channelName'>Имя канала</UiForm.Label>
-            <Field name='channelName'>
+          <UiForm.Group className="mb-2">
+            <UiForm.Label hidden htmlFor="channelName">Имя канала</UiForm.Label>
+            <Field name="channelName">
               {({ field }) => (
                 <UiForm.Control
                   {...field}
                   ref={inputRef}
                   type="text"
-                  id='channelName'
+                  id="channelName"
                   placeholder=""
                   isInvalid={!!errors.channelName}
-                  className='mb-2'
-                  onFocus={(e) => e.target.select()}
+                  className="mb-2"
+                  onFocus={e => e.target.select()}
                   autoFocus={true}
-                />)}
+                />
+              )}
             </Field>
             <UiForm.Control.Feedback type="invalid">
               {errors.channelName}
             </UiForm.Control.Feedback>
           </UiForm.Group>
-          <div className='d-flex justify-content-end gap-2'>
-            <Button variant='secondary' type='button' onClick={handleClose}>
+          <div className="d-flex justify-content-end gap-2">
+            <Button variant="secondary" type="button" onClick={handleClose}>
               {t('modals.cancel')}
             </Button>
-            <Button disabled={isSubmitting} type='submit'>
+            <Button disabled={isSubmitting} type="submit">
               {isSubmitting ? t('modals.renameChannel.submitting') : t('modals.renameChannel.submit')}
             </Button>
           </div>

@@ -16,7 +16,7 @@ const initI18n = () => {
       debug: true,
       interpolation: {
         escapeValue: false,
-      }
+      },
     })
 
   return instance

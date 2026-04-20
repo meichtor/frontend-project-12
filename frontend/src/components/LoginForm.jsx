@@ -9,7 +9,7 @@ import { setUserData } from '../state/user/userSlice'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
-const getLoginSchema = (t) => Yup.object().shape({
+const getLoginSchema = t => Yup.object().shape({
   username: Yup.string()
     .required(t('validation.required')),
   password: Yup.string()
@@ -36,7 +36,7 @@ const LoginForm = () => {
         setErrors({ form: t('validation.login.invalidUserCredentials') })
       }
       else {
-        setErrors({form: t('validation.networkError')})
+        setErrors({ form: t('validation.networkError') })
         toast.error(t('validation.networkError'))
       }
     }
@@ -52,33 +52,34 @@ const LoginForm = () => {
       onSubmit={handleSubmit}
     >
       {({ errors, touched, isSubmitting }) => (
-        <Form className='d-flex flex-column col-12'>
-          <h1 className='text-center mb-4'>{t('login.title')}</h1>
+        <Form className="d-flex flex-column col-12">
+          <h1 className="text-center mb-4">{t('login.title')}</h1>
           <FloatingLabel controlId="username" label={t('login.username')} className="mb-3">
-            <Field name='username'>
+            <Field name="username">
               {({ field }) => (
                 <UiForm.Control
                   {...field}
                   type="text"
                   placeholder={t('login.username')}
-                  autoComplete='username'
+                  autoComplete="username"
                   required
                   autoFocus
                   isInvalid={(!!errors.username || !!errors.form) && touched.username}
-                />)}
+                />
+              )}
             </Field>
             <UiForm.Control.Feedback type="invalid" tooltip>
               {errors.username}
             </UiForm.Control.Feedback>
           </FloatingLabel>
           <FloatingLabel controlId="password" label={t('login.password')} className="mb-3">
-            <Field name='password'>
+            <Field name="password">
               {({ field }) => (
                 <UiForm.Control
                   {...field}
-                  type='password'
+                  type="password"
                   placeholder={t('login.password')}
-                  autoComplete='current-password'
+                  autoComplete="current-password"
                   required
                   isInvalid={(!!errors.password || !!errors.form) && touched.password}
                 />
@@ -88,7 +89,7 @@ const LoginForm = () => {
               {errors.password || errors.form}
             </UiForm.Control.Feedback>
           </FloatingLabel>
-          <Button disabled={isSubmitting} type='submit' variant='outline-primary'>
+          <Button disabled={isSubmitting} type="submit" variant="outline-primary">
             {isSubmitting ? t('login.submitting') : t('login.submit')}
           </Button>
         </Form>

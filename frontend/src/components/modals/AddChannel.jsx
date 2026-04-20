@@ -17,7 +17,7 @@ const getAddChannelSchema = (channels, t) => Yup.object().shape({
     .min(3, t('validation.channels.channelNameLength'))
     .max(20, t('validation.channels.channelNameLength'))
     .notOneOf(
-      channels.map((ch) => ch.name),
+      channels.map(ch => ch.name),
       t('validation.channels.channelNameUnique'),
     ),
 })
@@ -70,8 +70,8 @@ const AddChannel = () => {
     >
       {({ errors, isSubmitting }) => (
         <Form>
-          <UiForm.Label hidden htmlFor='channelName'>Имя канала</UiForm.Label>
-          <Field name='channelName'>
+          <UiForm.Label hidden htmlFor="channelName">Имя канала</UiForm.Label>
+          <Field name="channelName">
             {({ field }) => (
               <UiForm.Control
                 {...field}
@@ -81,17 +81,18 @@ const AddChannel = () => {
                 placeholder=""
                 autoFocus
                 isInvalid={!!errors.channelName}
-                className='mb-2'
-              />)}
+                className="mb-2"
+              />
+            )}
           </Field>
           <UiForm.Control.Feedback type="invalid">
             {errors.channelName}
           </UiForm.Control.Feedback>
-          <div className='d-flex justify-content-end gap-2'>
-            <Button variant='secondary' type='button' onClick={handleClose}>
+          <div className="d-flex justify-content-end gap-2">
+            <Button variant="secondary" type="button" onClick={handleClose}>
               {t('modals.cancel')}
             </Button>
-            <Button disabled={isSubmitting} type='submit'>
+            <Button disabled={isSubmitting} type="submit">
               {isSubmitting ? t('modals.addChannel.submitting') : t('modals.addChannel.submit')}
             </Button>
           </div>

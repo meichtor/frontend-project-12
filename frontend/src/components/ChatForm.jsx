@@ -1,19 +1,19 @@
-import { Form, InputGroup, Button, Spinner } from "react-bootstrap"
-import { ArrowRightSquare } from "react-bootstrap-icons"
-import { useAddMessageMutation } from '../state/messages/messagesApi';
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { Form, InputGroup, Button, Spinner } from 'react-bootstrap'
+import { ArrowRightSquare } from 'react-bootstrap-icons'
+import { useAddMessageMutation } from '../state/messages/messagesApi'
+import { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import initProfanity from "../profanity";
+import initProfanity from '../profanity'
 
 const ChatForm = () => {
   const { t } = useTranslation()
-  const { selectedChannelId } = useSelector((state) => state.ui.chat)
-  const { username } = useSelector((state) => state.user)
+  const { selectedChannelId } = useSelector(state => state.ui.chat)
+  const { username } = useSelector(state => state.user)
   const [addMessage, { isLoading }] = useAddMessageMutation()
   const [inputMessage, setInputMessage] = useState('')
-  const inputRef = useRef(null);
+  const inputRef = useRef(null)
   const submitDisabled = inputMessage === '' || isLoading
   const filter = initProfanity()
 
@@ -35,7 +35,8 @@ const ChatForm = () => {
     try {
       await addMessage(message).unwrap()
       setInputMessage('')
-    } catch (err) {
+    }
+    catch (err) {
       console.error(`${t('errors.sending')}:`, err)
       toast.error(t('validation.networkError'))
     }
@@ -57,23 +58,23 @@ const ChatForm = () => {
           aria-label={t('chat.newMessage')}
           aria-describedby="basic-addon1"
           className="border-0 p-0 ps-2"
-          autoComplete='off'
+          autoComplete="off"
           value={inputMessage}
           onChange={handleChangeMessage}
           disabled={isLoading}
         />
         <Button type="submit" variant="outline-secondary" id="button-addon1" disabled={submitDisabled}>
-          {isLoading ?
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-            />
-            :
-            <ArrowRightSquare size={20} />
-          }
+          {isLoading
+            ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              )
+            : <ArrowRightSquare size={20} />}
           <span className="visually-hidden">{t('chat.send')}</span>
         </Button>
       </InputGroup>

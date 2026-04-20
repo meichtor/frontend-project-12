@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 const ChatModal = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { isOpen, type } = useSelector((state) => state.ui.modal)
+  const { isOpen, type } = useSelector(state => state.ui.modal)
 
   const handleClose = () => dispatch(closeModal())
 

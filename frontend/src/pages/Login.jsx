@@ -7,16 +7,18 @@ export default function Login() {
   const { t } = useTranslation()
 
   return (
-    <Container fluid className='h-100'>
+    <Container fluid className="h-100">
       <Row className="justify-content-center align-content-center h-100">
-        <Col className='col-8' xxl={3} md={8} >
-          <Card className='shadow-sm'>
-            <Card.Body className='p-5'>
+        <Col className="col-8" xxl={3} md={8}>
+          <Card className="shadow-sm">
+            <Card.Body className="p-5">
               <LoginForm />
             </Card.Body>
             <Card.Footer className="text-muted p-4">
-              <p className='text-center'>
-                {t('login.noAccount')} <Link to={'/signup'}>{t('login.signup')}</Link>
+              <p className="text-center">
+                {t('login.noAccount')}
+                {' '}
+                <Link to="/signup">{t('login.signup')}</Link>
               </p>
             </Card.Footer>
           </Card>

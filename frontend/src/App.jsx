@@ -20,12 +20,15 @@ function App() {
     <BrowserRouter>
       <ChatModal />
       <Routes>
-        <Route path="/" element={<Layout />}>\
-          <Route index element={(
-            <PrivateRoute>
-              <ChatPage />
-            </PrivateRoute>
-          )} />
+        <Route path="/" element={<Layout />}>
+          <Route
+            index
+            element={(
+              <PrivateRoute>
+                <ChatPage />
+              </PrivateRoute>
+            )}
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="*" element={<NotFound />} />

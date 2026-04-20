@@ -1,4 +1,4 @@
-import Rollbar from "rollbar"
+import Rollbar from 'rollbar'
 
 const initRollbar = () => {
   const rollbarConfig = {
@@ -14,4 +14,3 @@ const initRollbar = () => {
 }
 
 export default initRollbar
-

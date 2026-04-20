@@ -9,7 +9,7 @@ import { setUserData } from '../state/user/userSlice'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
-const getSignUpSchema = (t) => Yup.object().shape({
+const getSignUpSchema = t => Yup.object().shape({
   username: Yup.string()
     .required(t('validation.required'))
     .min(3, t('validation.signup.usernameLength'))
@@ -62,15 +62,15 @@ const SignUpForm = () => {
       onSubmit={handleSubmit}
     >
       {({ errors, touched, isSubmitting }) => (
-        <Form className='d-flex flex-column col-12'>
-          <h1 className='text-center mb-4'>{t('signup.title')}</h1>
+        <Form className="d-flex flex-column col-12">
+          <h1 className="text-center mb-4">{t('signup.title')}</h1>
           <FloatingLabel controlId="username" label={t('signup.username')} className="mb-3">
             <UiForm.Control
               as={Field}
-              name='username'
+              name="username"
               type="text"
               placeholder={t('signup.username')}
-              autoComplete='username'
+              autoComplete="username"
               required
               isInvalid={(!!errors.username || !!errors.form) && touched.username}
               autoFocus
@@ -82,10 +82,10 @@ const SignUpForm = () => {
           <FloatingLabel controlId="password" label={t('signup.password')} className="mb-3">
             <UiForm.Control
               as={Field}
-              name='password'
-              type='password'
+              name="password"
+              type="password"
               placeholder={t('signup.password')}
-              autoComplete='new-password'
+              autoComplete="new-password"
               required
               isInvalid={(!!errors.password || !!errors.form) && touched.password}
             />
@@ -96,10 +96,10 @@ const SignUpForm = () => {
           <FloatingLabel controlId="passwordConfirmation" label={t('signup.confirmPassword')} className="mb-3">
             <UiForm.Control
               as={Field}
-              name='passwordConfirmation'
-              type='password'
+              name="passwordConfirmation"
+              type="password"
               placeholder={t('signup.confirmPassword')}
-              autoComplete='new-password'
+              autoComplete="new-password"
               required
               isInvalid={(!!errors.passwordConfirmation || !!errors.form) && touched.passwordConfirmation}
             />
@@ -107,7 +107,7 @@ const SignUpForm = () => {
               {errors.passwordConfirmation || errors.form}
             </UiForm.Control.Feedback>
           </FloatingLabel>
-          <Button disabled={isSubmitting} type='submit' variant='outline-primary'>
+          <Button disabled={isSubmitting} type="submit" variant="outline-primary">
             {isSubmitting ? t('signup.submitting') : t('signup.submit')}
           </Button>
         </Form>

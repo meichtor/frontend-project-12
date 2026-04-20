@@ -22,13 +22,13 @@ export default {
         title: 'Переименовать канал',
         submitting: 'Отправка...',
         submit: 'Отправить',
-        success: 'Канал переименован'
+        success: 'Канал переименован',
       },
       removeChannel: {
         title: 'Удалить канал',
         confirm: 'Уверены?',
         submit: 'Удалить',
-        success: 'Канал удалён'
+        success: 'Канал удалён',
       },
     },
     validation: {
@@ -46,7 +46,7 @@ export default {
         passwordLength: 'Не менее 6 символов',
         passwordsMustMatch: 'Пароли должны совпадать',
         userExists: 'Такой пользователь уже существует',
-      }
+      },
     },
     chat: {
       placeholder: 'Введите сообщение...',
@@ -78,7 +78,7 @@ export default {
       loading: 'Ошибка загрузки',
       retry: 'Попробовать снова',
       tryReload: 'Попробуйте обновить страницу',
-      sending: 'Ошибка отправки'
+      sending: 'Ошибка отправки',
     },
     notifications: {
       channelAdded: 'Канал создан',
@@ -88,6 +88,6 @@ export default {
     notfound: {
       title: 'Страница не найдена',
       back: 'Назад',
-    }
+    },
   },
 }

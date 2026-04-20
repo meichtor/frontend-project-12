@@ -17,7 +17,7 @@ const messagesApi = createApi({
     }),
   tagTypes: ['Messages'],
 
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getMessages: builder.query({
       query: () => `/messages`,
       providesTags: ['Messages'],
@@ -30,14 +30,14 @@ const messagesApi = createApi({
 
           socket.connect()
 
-          const newMessageHandler = (message) =>
+          const newMessageHandler = message =>
             updateCachedData((draft) => {
               draft.push(message)
             })
 
           const removeChannelHandler = ({ id }) =>
             updateCachedData((draft) => {
-              return draft.filter((msg) => msg.channelId !== id)
+              return draft.filter(msg => msg.channelId !== id)
             })
 
           socket.addEventListener('newMessage', newMessageHandler)
@@ -53,10 +53,10 @@ const messagesApi = createApi({
       },
     }),
     addMessage: builder.mutation({
-      query: (message) => ({
+      query: message => ({
         url: '/messages',
         method: 'POST',
-        body: message
+        body: message,
       }),
     }),
   }),

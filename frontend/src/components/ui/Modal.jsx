@@ -6,11 +6,12 @@ const Modal = ({ showModal, closeModal, modalTitle, children }) => {
       <BSModal.Header closeButton>
         <BSModal.Title>{modalTitle}</BSModal.Title>
       </BSModal.Header>
-      {children &&
-        <BSModal.Body>
-          {children}
-        </BSModal.Body>
-      }
+      {children
+        && (
+          <BSModal.Body>
+            {children}
+          </BSModal.Body>
+        )}
     </BSModal>
   )
 }

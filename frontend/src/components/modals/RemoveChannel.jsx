@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 const RemoveChannel = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const modalInfo = useSelector((state) => state.ui.modal.extra)
+  const modalInfo = useSelector(state => state.ui.modal.extra)
   const [removeChannel] = useRemoveChannelMutation()
 
   const handleClose = () => {
@@ -30,12 +30,12 @@ const RemoveChannel = () => {
 
   return (
     <>
-      <p className='lead'>{t('modals.removeChannel.confirm')}</p>
-      <div className='d-flex justify-content-end gap-2'>
-        <Button variant='secondary' type='button' onClick={handleClose}>
+      <p className="lead">{t('modals.removeChannel.confirm')}</p>
+      <div className="d-flex justify-content-end gap-2">
+        <Button variant="secondary" type="button" onClick={handleClose}>
           {t('modals.cancel')}
         </Button>
-        <Button variant='danger' type='button' onClick={() => handleDelete()}>
+        <Button variant="danger" type="button" onClick={() => handleDelete()}>
           {t('modals.removeChannel.submit')}
         </Button>
       </div>

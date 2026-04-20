@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   chat: {
@@ -8,8 +8,8 @@ const initialState = {
   modal: {
     isOpen: false,
     type: null,
-    extra: null
-  }
+    extra: null,
+  },
 }
 
 const uiSlice = createSlice({

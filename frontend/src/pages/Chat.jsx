@@ -12,7 +12,7 @@ import { Navigate } from 'react-router'
 
 export default function ChatPage() {
   const { t } = useTranslation()
-  const { selectedChannelId, defaultChannelId } = useSelector((state) => state.ui.chat)
+  const { selectedChannelId, defaultChannelId } = useSelector(state => state.ui.chat)
   const {
     data: channels,
     isLoading: isChannelsLoading,
@@ -29,12 +29,12 @@ export default function ChatPage() {
   } = useGetMessagesQuery()
 
   if (messagesError?.status === 401 || channelsError?.status === 401) {
-    return <Navigate to={'/login'} />
+    return <Navigate to="/login" />
   }
 
   if (isChannelsLoading || isMessagesLoading) {
     return (
-      <Container className='my-4 w-100 d-flex justify-content-center align-items-center h-100 rounded shadow'>
+      <Container className="my-4 w-100 d-flex justify-content-center align-items-center h-100 rounded shadow">
         <Loader />
       </Container>
     )
@@ -45,11 +45,11 @@ export default function ChatPage() {
     const refetch = isChannelsError ? refetchChannels : refetchMessages
 
     return (
-      <Container className='my-4 w-100 h-100'>
+      <Container className="my-4 w-100 h-100">
         <Alert variant="danger" className="m-3">
           <Alert.Heading>{t('errors.error')}</Alert.Heading>
           <p>{message || t('errors.tryReload')}</p>
-          <Button className='mt-3' variant="outline-danger" onClick={refetch}>
+          <Button className="mt-3" variant="outline-danger" onClick={refetch}>
             {t('errors.retry')}
           </Button>
         </Alert>
@@ -62,14 +62,14 @@ export default function ChatPage() {
   const messagesCount = channelMessages.length
 
   return (
-    <Container className='my-4 h-100 rounded shadow overflow-hidden'>
-      <Row className='relative h-100 bg-white flex-md-row'>
+    <Container className="my-4 h-100 rounded shadow overflow-hidden">
+      <Row className="relative h-100 bg-white flex-md-row">
         <ChannelsList channels={channels} />
         <Col className="col p-0 h-100">
-          <div className='d-flex flex-column h-100'>
+          <div className="d-flex flex-column h-100">
             <ChatHeader channel={currentChannel} messagesCount={messagesCount} />
             <ChatMessages messages={channelMessages} selectedChannelId={selectedChannelId} />
-            <div className='mt-auto px-5 py-3'>
+            <div className="mt-auto px-5 py-3">
               <ChatForm />
             </div>
           </div>

@@ -18,7 +18,7 @@ const channelsApi = createApi({
     }),
   tagTypes: ['Channels'],
 
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getChannels: builder.query({
       query: () => `/channels`,
       providesTags: ['Channels'],
@@ -31,14 +31,14 @@ const channelsApi = createApi({
 
           socket.connect()
 
-          const newChannelHandler = (channel) =>
+          const newChannelHandler = channel =>
             updateCachedData((draft) => {
               draft.push(channel)
             })
 
-          const renameChannelHandler = (channel) =>
+          const renameChannelHandler = channel =>
             updateCachedData((draft) => {
-              const updatedChannel = draft.find((ch) => ch.id === channel.id)
+              const updatedChannel = draft.find(ch => ch.id === channel.id)
               if (updatedChannel) {
                 updatedChannel.name = channel.name
               }
@@ -66,25 +66,25 @@ const channelsApi = createApi({
       },
     }),
     addChannel: builder.mutation({
-      query: (channel) => ({
+      query: channel => ({
         url: '/channels',
         method: 'POST',
-        body: channel
+        body: channel,
       }),
     }),
     renameChannel: builder.mutation({
-      query: (payload) => ({
+      query: payload => ({
         url: `/channels/${payload.id}`,
         method: 'PATCH',
-        body: payload.channel
+        body: payload.channel,
       }),
     }),
     removeChannel: builder.mutation({
-      query: (id) => ({
+      query: id => ({
         url: `/channels/${id}`,
         method: 'DELETE',
       }),
-    })
+    }),
   }),
 })
 

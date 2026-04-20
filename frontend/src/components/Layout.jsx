@@ -1,8 +1,8 @@
-import { Outlet, NavLink as RouterNavLink } from 'react-router';
+import { Outlet, NavLink as RouterNavLink } from 'react-router'
 import { Navbar, Container, Button } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../state/user/userSlice';
-import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../state/user/userSlice'
+import { useTranslation } from 'react-i18next'
 import { ToastContainer } from 'react-toastify'
 
 export default function Layout() {
@@ -12,23 +12,24 @@ export default function Layout() {
 
   return (
     <div className="d-flex flex-column h-100">
-      <Navbar className='shadow-sm' bg="white" expand="lg">
+      <Navbar className="shadow-sm" bg="white" expand="lg">
         <Container>
           <Navbar.Brand as={RouterNavLink} to="/">
             {t('header.title')}
           </Navbar.Brand>
-          {isAuth &&
-            <Button
-              variant='primary'
-              onClick={() => dispatch(logout())}
-            >
-              {t('header.logout')}
-            </Button>
-          }
+          {isAuth
+            && (
+              <Button
+                variant="primary"
+                onClick={() => dispatch(logout())}
+              >
+                {t('header.logout')}
+              </Button>
+            )}
         </Container>
       </Navbar>
       <ToastContainer />
       <Outlet />
     </div>
-  );
+  )
 }
