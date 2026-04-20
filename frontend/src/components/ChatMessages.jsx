@@ -14,7 +14,7 @@ const ChatMessages = ({ messages, selectedChannelId }) => {
       {messages.map((message) => (
         <div key={message.id} className="mb-2 text-break">
           <b>{message.username}</b>
-          :{' '}
+          {': '}
           {message.body}
         </div>
       ))}

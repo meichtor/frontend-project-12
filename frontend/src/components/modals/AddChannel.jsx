@@ -47,7 +47,7 @@ const AddChannel = () => {
     try {
       const newChannel = await addChannel(channel).unwrap()
       dispatch(setCurrentChannel(newChannel.id))
-      toast.success(t('modals.addChannel.success'), { autoClose: 2000 })
+      toast.success(t('modals.addChannel.success'))
       handleClose()
     }
     catch (err) {

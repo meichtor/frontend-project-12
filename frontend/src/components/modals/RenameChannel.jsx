@@ -49,7 +49,7 @@ const RenameChannel = () => {
 
     try {
       await renameChannel(payload).unwrap()
-      toast.success(t('modals.renameChannel.success'), { autoClose: 2000 })
+      toast.success(t('modals.renameChannel.success'))
       handleClose()
     }
     catch (err) {
