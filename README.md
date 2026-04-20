@@ -4,6 +4,7 @@
 [![Actions Status](https://github.com/meichtor/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/meichtor/frontend-project-12/actions)
 [![Node CI](https://github.com/meichtor/frontend-project-12/actions/workflows/nodeci.yml/badge.svg)](https://github.com/meichtor/frontend-project-12/actions/workflows/nodeci.yml)
 
+
 ## Setup
 
 ```bash
