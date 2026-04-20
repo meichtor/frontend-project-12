@@ -28,7 +28,7 @@ export default {
         title: 'Удалить канал',
         confirm: 'Уверены?',
         submit: 'Удалить',
-        success: 'Канал удален'
+        success: 'Канал удалён'
       },
     },
     validation: {

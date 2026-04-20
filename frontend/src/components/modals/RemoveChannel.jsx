@@ -19,10 +19,7 @@ const RemoveChannel = () => {
   const handleDelete = async () => {
     try {
       await removeChannel(modalInfo.channelId).unwrap()
-      toast.success(t('modals.removeChannel.success'), {
-        position: 'top-right',
-        autoClose: 2000,
-      })
+      toast.success(t('modals.removeChannel.success'))
       handleClose()
     }
     catch (e) {
