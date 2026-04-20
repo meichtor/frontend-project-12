@@ -1,5 +1,4 @@
 import { Button } from 'react-bootstrap'
-import Modal from '../ui/Modal'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '../../state/ui/uiSlice'
 import { useRemoveChannelMutation } from '../../state/channels/channelsApi'

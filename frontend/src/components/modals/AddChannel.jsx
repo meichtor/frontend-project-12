@@ -1,6 +1,5 @@
 import { Button, Form as UiForm } from 'react-bootstrap'
 import { Formik, Field, Form } from 'formik'
-import Modal from '../ui/Modal'
 import * as Yup from 'yup'
 import { useAddChannelMutation, useGetChannelsQuery } from '../../state/channels/channelsApi'
 import { closeModal, setCurrentChannel } from '../../state/ui/uiSlice'
