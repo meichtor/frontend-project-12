@@ -73,19 +73,20 @@ const RenameChannel = () => {
       {({ errors, isSubmitting }) => (
         <Form>
           <UiForm.Group className='mb-2'>
+            <UiForm.Label hidden htmlFor='channelName'>Имя канала</UiForm.Label>
             <Field name='channelName'>
               {({ field }) => (
                 <UiForm.Control
                   {...field}
                   ref={inputRef}
                   type="text"
+                  id='channelName'
                   placeholder=""
                   isInvalid={!!errors.channelName}
                   className='mb-2'
                   onFocus={(e) => e.target.select()}
                   autoFocus={true}
-                />
-              )}
+                />)}
             </Field>
             <UiForm.Control.Feedback type="invalid">
               {errors.channelName}

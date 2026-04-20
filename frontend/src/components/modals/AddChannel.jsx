@@ -70,12 +70,14 @@ const AddChannel = () => {
     >
       {({ errors, isSubmitting }) => (
         <Form>
+          <UiForm.Label hidden htmlFor='channelName'>Имя канала</UiForm.Label>
           <Field name='channelName'>
             {({ field }) => (
               <UiForm.Control
                 {...field}
                 ref={inputRef}
                 type="text"
+                id="channelName"
                 placeholder=""
                 autoFocus
                 isInvalid={!!errors.channelName}
