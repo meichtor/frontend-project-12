@@ -34,7 +34,6 @@ const LoginForm = () => {
 
       if (status === 401) {
         setErrors({ form: t('validation.login.invalidUserCredentials') })
-        toast.error(t('validation.login.invalidUserCredentials'))
       }
       else {
         setErrors({form: t('validation.networkError')})
