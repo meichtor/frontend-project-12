@@ -47,7 +47,9 @@ const ChannelItem = ({ channel }) => {
             handleChannelClick={handleChannelClick}
           />
 
-          <Dropdown.Toggle split variant={isCurrentChannel ? 'secondary' : null} id="dropdown-split-basic" />
+          <Dropdown.Toggle split variant={isCurrentChannel ? 'secondary' : null} id="dropdown-split-basic" >
+            <span className='visually-hidden'>Управление каналом</span>
+          </Dropdown.Toggle>
 
           <Dropdown.Menu>
             <Dropdown.Item href="#" onClick={handleDeleteClick(channel.id)}>{t('channels.remove')}</Dropdown.Item>
